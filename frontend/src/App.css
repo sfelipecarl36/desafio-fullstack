@@ -1,6 +1,35 @@
+/* Responsividade telas menores */
+
+@media screen and (max-width: 760px) {
+
+  #root {
+    width: 100%;
+  }
+
+  body {
+    min-width: inherit;
+  }
+
+  .kanban-board {
+    display: block;
+  }
+
+  .container-principal {
+    padding: 10px 15px;
+  }
+
+  .kanban-board .kanban-column {
+    display: block;
+    width: 100%;
+    margin: 10px 0px;
+  }
+}
+
 .container-principal {
-  width: 99vw;
+  width: 100%;
+  min-height: 100vh;
   padding: 10px 30px;
+  box-sizing: border-box;
 }
 
 input, textarea {

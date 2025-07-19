@@ -28,8 +28,8 @@ export const BlocoTarefa: React.FC<BlocoTarefaProps> = ({ tarefa, onEdit, onDele
 
       <div className="bloco-body">
         <p className="">{tarefa.descricao}</p>
-        <span>ID: {tarefa.id}</span>
-        <span>Status: {tarefa.status}</span>
+        {/* <span>ID: {tarefa.id}</span>
+        <span>Status: {tarefa.status}</span> */}
       </div>
 
       <div className="bloco-footer"> 

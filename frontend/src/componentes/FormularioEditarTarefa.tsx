@@ -98,15 +98,7 @@ export const FormularioEditarTarefa: React.FC<FormularioEditarTarefaProps> = ({ 
               disabled={isLoading}
             ></textarea>
           </div>
-          <div className="form-grupo">
-            <label htmlFor="edit-comentario">Comentário (opcional):</label>
-            <textarea
-              id="edit-comentario"
-              value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
-              disabled={isLoading}
-            ></textarea>
-          </div>
+          
           <div className="form-grupo"> 
             <label htmlFor="edit-status">Status:</label>
             <select
