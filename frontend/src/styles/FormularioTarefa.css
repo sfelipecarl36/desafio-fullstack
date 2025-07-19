@@ -1,0 +1,111 @@
+.formulario-tarefa-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.formulario-tarefa-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh; 
+  overflow-y: auto;
+}
+
+.formulario-tarefa-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #172b4d;
+  font-size: 1.1rem;
+}
+
+.form-grupo {
+  margin-bottom: 1rem;
+}
+
+.form-grupo label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #42526e;
+}
+
+.form-grupo input[type="text"],
+.form-grupo textarea {
+  width: calc(100% - 20px);
+  padding: 0.75rem 10px;
+  border: 1px solid #dfe1e6;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #172b4d;
+  box-sizing: border-box; 
+}
+
+.form-grupo textarea {
+  min-height: 80px;
+  resize: vertical; 
+}
+
+.form-grupo input:focus,
+.form-grupo textarea:focus {
+  outline: none;
+  border-color: #0052cc;
+  box-shadow: 0 0 0 2px rgba(0, 82, 204, 0.2);
+}
+
+.form-botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-botoes button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.form-botoes button[type="submit"] {
+  background-color: #0052cc;
+  color: #fff;
+}
+
+.form-botoes button[type="submit"]:hover:not(:disabled) {
+  background-color: #0065ff;
+}
+
+.form-botoes button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.botao-cancelar {
+  background-color: #e0e0e0;
+  color: #42526e;
+}
+
+.botao-cancelar:hover:not(:disabled) {
+  background-color: #d0d0d0;
+}
+
+.form-erro {
+  color: #e00000;
+  font-size: 0.875rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}

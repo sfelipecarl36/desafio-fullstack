@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CriarTarefaDto } from './criar-tarefa.dto';
-import { TarefaStatus } from '../tarefas.entity';
 import { IsOptional, IsEnum } from 'class-validator';
+import { TarefaStatus } from '../tarefas.entity';
 
 export class UpdateTarefaDto extends PartialType(CriarTarefaDto) {
   @IsOptional()

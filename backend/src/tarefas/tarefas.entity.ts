@@ -28,6 +28,6 @@ export class Tarefa {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   data_criacao: Date;
 
-  @Column({default: '' })
+  @Column({ nullable: true, default: '' })
   comentario: string;
 }
