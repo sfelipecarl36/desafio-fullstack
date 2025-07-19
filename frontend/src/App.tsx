@@ -7,12 +7,14 @@ import { FormularioEditarTarefa } from './componentes/FormularioEditarTarefa';
 import './index.css';
 import './App.css';
 
+const ordem_status: TarefaStatus[] = ['pending', 'in_progress', 'testing', 'done'];
+
 function App() {
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [showFormularioCriacao, setShowFormularioCriacao] = useState(false);
-  const [tarefaEditandoId, setTarefaEditandoId] = useState<string | null>(null); // <-- Novo: Estado para ID da tarefa em edição
+  const [tarefaEditandoId, setTarefaEditandoId] = useState<string | null>(null);
 
   const fetchTarefas = useCallback(async () => {
     try {
@@ -36,24 +38,50 @@ function App() {
   };
 
   const handleTarefaAtualizada = () => {
-    // Esta função serve para criação, edição e exclusão
     fetchTarefas();
-    setShowFormularioCriacao(false); // Fecha formulário de criação
-    setTarefaEditandoId(null); // Fecha formulário de edição
+    setShowFormularioCriacao(false); 
+    setTarefaEditandoId(null); 
   };
 
   const handleEditTarefa = (id: string) => {
-    setTarefaEditandoId(id); // Abre o formulário de edição para esta tarefa
+    setTarefaEditandoId(id); 
   };
 
   const handleDeleteTarefa = async (id: string) => {
     setError(null);
     try {
       await tarefaService.deleteTarefa(id);
-      handleTarefaAtualizada(); // Atualiza a lista após exclusão
+      handleTarefaAtualizada(); 
     } catch (err) {
       console.error("Erro ao deletar tarefa:", err);
       setError("Falha ao deletar tarefa. Tente novamente.");
+    }
+  };
+
+  const handleAvancarTarefa = async (id: string, currentStatus: TarefaStatus) => {
+    setError(null);
+    const currentIndex = ordem_status.indexOf(currentStatus);
+    const nextIndex = currentIndex + 1;
+
+    if (nextIndex < ordem_status.length) { 
+      const newStatus = ordem_status[nextIndex];
+      try {
+       
+        const tarefaAtual = tarefas.find(t => t.id === id);
+        if (tarefaAtual) {
+          const dadosParaAtualizar = {
+            titulo: tarefaAtual.titulo, 
+            descricao: tarefaAtual.descricao,
+            comentario: tarefaAtual.comentario,
+            status: newStatus, 
+          };
+          await tarefaService.updateTarefa(id, dadosParaAtualizar);
+          handleTarefaAtualizada();
+        }
+      } catch (err) {
+        console.error("Erro ao avançar tarefa:", err);
+        setError("Erro ao avançar tarefa");
+      }
     }
   };
 
@@ -77,8 +105,10 @@ function App() {
           title="Pendente"
           status={'pending'}
           tarefas={getTarefasByStatus('pending')}
-          onEdit={handleEditTarefa} // <-- Passa o handler para a coluna
-          onDelete={handleDeleteTarefa} // <-- Passa o handler para a coluna
+          onEdit={handleEditTarefa}  
+          onDelete={handleDeleteTarefa} 
+          onAvancar={handleAvancarTarefa}
+          UltimaColuna={false} 
         />
         <ColunaKanban
           title="Em Progresso"
@@ -86,6 +116,8 @@ function App() {
           tarefas={getTarefasByStatus('in_progress')}
           onEdit={handleEditTarefa}
           onDelete={handleDeleteTarefa}
+          onAvancar={handleAvancarTarefa}
+          UltimaColuna={false} 
         />
         <ColunaKanban
           title="Em Teste"
@@ -93,6 +125,8 @@ function App() {
           tarefas={getTarefasByStatus('testing')}
           onEdit={handleEditTarefa}
           onDelete={handleDeleteTarefa}
+          onAvancar={handleAvancarTarefa}
+          UltimaColuna={false} 
         />
         <ColunaKanban
           title="Concluído"
@@ -100,6 +134,8 @@ function App() {
           tarefas={getTarefasByStatus('done')}
           onEdit={handleEditTarefa}
           onDelete={handleDeleteTarefa}
+          onAvancar={handleAvancarTarefa}
+          UltimaColuna={true} 
         />
       </main>
 
@@ -110,7 +146,6 @@ function App() {
         />
       )}
 
-      {/* Renderiza o formulário de edição se um ID estiver definido */}
       {tarefaEditandoId && (
         <FormularioEditarTarefa
           tarefaId={tarefaEditandoId}

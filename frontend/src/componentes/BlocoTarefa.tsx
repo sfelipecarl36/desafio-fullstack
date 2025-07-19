@@ -5,9 +5,11 @@ interface BlocoTarefaProps {
   tarefa: Tarefa;
   onEdit: (tarefaId: string) => void;   
   onDelete: (tarefaId: string) => void; 
+  onAvancar: (tarefaId: string, currentStatus: Tarefa['status']) => void;
+  UltimaColuna: boolean;
 }
 
-export const BlocoTarefa: React.FC<BlocoTarefaProps> = ({ tarefa, onEdit, onDelete }) => {
+export const BlocoTarefa: React.FC<BlocoTarefaProps> = ({ tarefa, onEdit, onDelete, onAvancar, UltimaColuna }) => {
   
   const formatarData = (dataString: string) => {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -15,9 +17,13 @@ export const BlocoTarefa: React.FC<BlocoTarefaProps> = ({ tarefa, onEdit, onDele
   };
 
   const handleDeleteClick = () => {
-    if (window.confirm(`Tem certeza que deseja excluir a tarefa "${tarefa.titulo}"?`)) {
+    if (window.confirm(`Excluir a tarefa "${tarefa.titulo}"?`)) {
       onDelete(tarefa.id);
     }
+  };
+
+  const handleAvancarClick = () => {
+    onAvancar(tarefa.id, tarefa.status);
   };
 
   return (
@@ -33,9 +39,15 @@ export const BlocoTarefa: React.FC<BlocoTarefaProps> = ({ tarefa, onEdit, onDele
       </div>
 
       <div className="bloco-footer"> 
-        <span className="bloco-data-criacao">Criado em: {formatarData(tarefa.data_criacao)}</span>
+        <span className="bloco-data-criacao">Criação: {formatarData(tarefa.data_criacao)}</span>
         <div className="bloco-acoes">
           
+          {!UltimaColuna && (
+            <button onClick={handleAvancarClick} className="botao-acao avancar" title="Avançar Tarefa">
+              <i className="fas fa-arrow-right"></i>
+            </button>
+          )}
+
           <button onClick={() => onEdit(tarefa.id)} className="botao-acao editar" title="Editar Tarefa">
             <i className="fas fa-edit"></i> 
           </button>

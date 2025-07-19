@@ -9,9 +9,11 @@ interface KanbanColumnProps {
   tarefas: Tarefa[];
   onEdit: (tarefaId: string) => void;  
   onDelete: (tarefaId: string) => void;
+  onAvancar: (tarefaId: string, currentStatus: Tarefa['status']) => void;
+  UltimaColuna: boolean;
 }
 
-export const ColunaKanban: React.FC<KanbanColumnProps> = ({ title, status, tarefas, onEdit, onDelete  }) => {
+export const ColunaKanban: React.FC<KanbanColumnProps> = ({ title, status, tarefas, onEdit, onDelete, onAvancar, UltimaColuna  }) => {
   return (
     <div className="kanban-column">
       <div className="column-header">
@@ -25,7 +27,9 @@ export const ColunaKanban: React.FC<KanbanColumnProps> = ({ title, status, taref
              key={tarefa.id}
              tarefa={tarefa}
              onEdit={onEdit}  
-             onDelete={onDelete} 
+             onDelete={onDelete}
+             onAvancar={onAvancar} 
+             UltimaColuna={UltimaColuna}
               />
           ))
         ) : (

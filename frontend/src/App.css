@@ -32,9 +32,23 @@
   box-sizing: border-box;
 }
 
-input, textarea {
+input, textarea, select {
   background: #F4F5F7;
   color: #676C7D;
+}
+
+select {
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.botao-acao.avancar {
+  color: #28a745;
+}
+
+.botao-acao.avancar:hover {
+  background-color: #e6ffe6;
+  color: #218838;
 }
 
 .botao-adicionar-tarefa {
