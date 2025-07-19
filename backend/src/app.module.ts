@@ -1,10 +1,10 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // <-- Importe ConfigService também
+import { ConfigModule, ConfigService } from '@nestjs/config'; 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TarefasModule } from './tarefas/tarefas.module';
+import { IaModule } from './IA/ia.module';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { TarefasModule } from './tarefas/tarefas.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, TarefasModule],
+      imports: [ConfigModule, TarefasModule, IaModule],
       useFactory: (configService: ConfigService) => ({ 
         type: 'postgres',
         host: configService.get<string>('DB_HOST'),

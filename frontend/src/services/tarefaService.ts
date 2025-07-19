@@ -40,4 +40,14 @@ export const tarefaService = {
   deleteTarefa: async (id: string): Promise<void> => {
     await apiClient.delete(`/tarefas/${id}`);
   },
+
+  async sugerirDescricao(titulo: string): Promise<string> {
+    try {
+      const response = await axios.post<{ description: string }>(`${API_URL}/ai/suggest-description`, { titulo });
+      return response.data.description;
+    } catch (error) {
+      console.error('Erro pra chamar o backend:', error);
+      return 'não foi possível gerar uma sugestão';
+    }
+  },
 };

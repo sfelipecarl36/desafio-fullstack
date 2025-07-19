@@ -63,8 +63,35 @@ select {
   transition: background-color 0.2s ease;
 }
 
-.botao-adicionar-tarefa:hover {
+.botao-adicionar-tarefa:hover{
   background-color: #0056b3;
+}
+
+.botao-sugerir-desc {
+  background-color: #6c757d;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  display: block; 
+  width: fit-content;
+  transition: background-color 0.2s ease;
+}
+
+.botao-sugerir-desc:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.botao-sugerir-desc:disabled {
+  background-color: #ccc;
+}
+
+
+.fa-spinner {
+  margin-right: 5px;
 }
 
 header.header h1 {

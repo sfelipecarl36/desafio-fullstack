@@ -13,6 +13,7 @@ export const FormularioCriarTarefa: React.FC<FormularioTarefaProps> = ({ onTaref
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,6 +45,26 @@ export const FormularioCriarTarefa: React.FC<FormularioTarefaProps> = ({ onTaref
     }
   };
 
+  const handleSuggestDescription = async () => {
+    setError(null);
+    if (!titulo.trim()) {
+      setError('Por favor, insira um título para gerar uma sugestão de descrição.');
+      return;
+    }
+
+    setIsGeneratingDescription(true);
+    try {
+      const sugestao = await tarefaService.sugerirDescricao(titulo);
+      setDescricao(sugestao);
+    } catch (err) {
+      console.error("erro ao sugerir descrição:", err);
+      setError('não foi possível gerar uma sugestão');
+    } finally {
+      setIsGeneratingDescription(false);
+    }
+  };
+
+
   return (
     <div className="formulario-tarefa-overlay"> 
       <div className="formulario-tarefa-container">
@@ -57,7 +78,7 @@ export const FormularioCriarTarefa: React.FC<FormularioTarefaProps> = ({ onTaref
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
               required
-              disabled={isLoading}
+              disabled={isLoading || isGeneratingDescription}
             />
           </div>
           <div className="form-grupo">
@@ -69,6 +90,23 @@ export const FormularioCriarTarefa: React.FC<FormularioTarefaProps> = ({ onTaref
               required
               disabled={isLoading}
             ></textarea>
+            <button
+              type="button"
+              onClick={handleSuggestDescription}
+              disabled={isLoading || isGeneratingDescription || !titulo.trim()}
+              className="botao-sugerir-desc"
+              title="Gerar descrição com IA"
+            >
+              {isGeneratingDescription ? (
+                <>
+                  <i className="fas fa-spinner fa-spin"></i> Gerando...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-magic"></i> Sugerir Descrição
+                </>
+              )}
+            </button>
           </div>
           {error && <p className="form-erro">{error}</p>}
           <div className="form-botoes">

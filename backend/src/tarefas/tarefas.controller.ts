@@ -19,6 +19,7 @@ import { UpdateTarefaDto } from './dto/update-tarefa.dto';
 
 @Controller('tarefas') 
 export class TarefasController {
+  
   constructor(private tarefasService: TarefasService) {}
 
   @Get()
@@ -64,4 +65,6 @@ export class TarefasController {
   async remove(@Param('id') id: string): Promise<void> {
     await this.tarefasService.remove(id);
   }
+
+  
 }
