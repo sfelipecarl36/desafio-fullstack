@@ -1,9 +1,11 @@
+
 import { useState, useEffect, useCallback } from 'react';
-import type { Tarefa, TarefaStatus } from './model/tarefa';
+import type { Tarefa, TarefaStatus } from './model/tarefa'; 
 import { tarefaService } from './services/tarefaService';
 import { ColunaKanban } from './componentes/ColunaKanban';
 import { FormularioCriarTarefa } from './componentes/FormularioCriarTarefa';
 import { FormularioEditarTarefa } from './componentes/FormularioEditarTarefa';
+import { ModalDetalhesTarefa } from './componentes/ModalDetalhesTarefa'; 
 import './index.css';
 import './App.css';
 
@@ -15,6 +17,9 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [showFormularioCriacao, setShowFormularioCriacao] = useState(false);
   const [tarefaEditandoId, setTarefaEditandoId] = useState<string | null>(null);
+
+  const [modalDetalhesAberta, setModalDetalhesAberta] = useState(false);
+  const [tarefaSelecionada, setTarefaSelecionada] = useState<Tarefa | null>(null);
 
   const fetchTarefas = useCallback(async () => {
     try {
@@ -39,22 +44,34 @@ function App() {
 
   const handleTarefaAtualizada = () => {
     fetchTarefas();
-    setShowFormularioCriacao(false); 
-    setTarefaEditandoId(null); 
+    setShowFormularioCriacao(false);
+    setTarefaEditandoId(null);
+
+    if (modalDetalhesAberta) {
+      setModalDetalhesAberta(false);
+      setTarefaSelecionada(null);
+    }
   };
 
   const handleEditTarefa = (id: string) => {
-    setTarefaEditandoId(id); 
+    setTarefaEditandoId(id);
+  
+    if (tarefaSelecionada && tarefaSelecionada.id === id) {
+      setModalDetalhesAberta(false);
+      setTarefaSelecionada(null);
+    }
   };
 
   const handleDeleteTarefa = async (id: string) => {
     setError(null);
-    try {
-      await tarefaService.deleteTarefa(id);
-      handleTarefaAtualizada(); 
-    } catch (err) {
-      console.error("Erro ao deletar tarefa:", err);
-      setError("Falha ao deletar tarefa. Tente novamente.");
+    if (window.confirm('Tem certeza que deseja deletar esta tarefa?')) {
+      try {
+        await tarefaService.deleteTarefa(id);
+        handleTarefaAtualizada();
+      } catch (err) {
+        console.error("Erro ao deletar tarefa:", err);
+        setError("Falha ao deletar tarefa. Tente novamente.");
+      }
     }
   };
 
@@ -63,17 +80,16 @@ function App() {
     const currentIndex = ordem_status.indexOf(currentStatus);
     const nextIndex = currentIndex + 1;
 
-    if (nextIndex < ordem_status.length) { 
+    if (nextIndex < ordem_status.length) {
       const newStatus = ordem_status[nextIndex];
       try {
-       
         const tarefaAtual = tarefas.find(t => t.id === id);
         if (tarefaAtual) {
           const dadosParaAtualizar = {
-            titulo: tarefaAtual.titulo, 
+            titulo: tarefaAtual.titulo,
             descricao: tarefaAtual.descricao,
-            comentario: tarefaAtual.comentario,
-            status: newStatus, 
+            comentario: tarefaAtual.comentarios,
+            status: newStatus,
           };
           await tarefaService.updateTarefa(id, dadosParaAtualizar);
           handleTarefaAtualizada();
@@ -83,6 +99,17 @@ function App() {
         setError("Erro ao avançar tarefa");
       }
     }
+  };
+
+  const handleAbrirDetalhesTarefa = (tarefa: Tarefa) => {
+    setTarefaSelecionada(tarefa);
+    setModalDetalhesAberta(true);
+  };
+
+  const handleFecharDetalhesTarefa = () => {
+    setModalDetalhesAberta(false);
+    setTarefaSelecionada(null); 
+    fetchTarefas();
   };
 
   if (loading) return <div className="loading-message">Carregando tarefas...</div>;
@@ -105,10 +132,11 @@ function App() {
           title="Pendente"
           status={'pending'}
           tarefas={getTarefasByStatus('pending')}
-          onEdit={handleEditTarefa}  
-          onDelete={handleDeleteTarefa} 
+          onEdit={handleEditTarefa}
+          onDelete={handleDeleteTarefa}
           onAvancar={handleAvancarTarefa}
-          UltimaColuna={false} 
+          UltimaColuna={false}
+          onCardClick={handleAbrirDetalhesTarefa} 
         />
         <ColunaKanban
           title="Em Progresso"
@@ -117,7 +145,8 @@ function App() {
           onEdit={handleEditTarefa}
           onDelete={handleDeleteTarefa}
           onAvancar={handleAvancarTarefa}
-          UltimaColuna={false} 
+          UltimaColuna={false}
+          onCardClick={handleAbrirDetalhesTarefa} 
         />
         <ColunaKanban
           title="Em Teste"
@@ -126,7 +155,8 @@ function App() {
           onEdit={handleEditTarefa}
           onDelete={handleDeleteTarefa}
           onAvancar={handleAvancarTarefa}
-          UltimaColuna={false} 
+          UltimaColuna={false}
+          onCardClick={handleAbrirDetalhesTarefa} 
         />
         <ColunaKanban
           title="Concluído"
@@ -135,7 +165,8 @@ function App() {
           onEdit={handleEditTarefa}
           onDelete={handleDeleteTarefa}
           onAvancar={handleAvancarTarefa}
-          UltimaColuna={true} 
+          UltimaColuna={true}
+          onCardClick={handleAbrirDetalhesTarefa} 
         />
       </main>
 
@@ -151,6 +182,14 @@ function App() {
           tarefaId={tarefaEditandoId}
           onTarefaAtualizada={handleTarefaAtualizada}
           onCancel={() => setTarefaEditandoId(null)}
+        />
+      )}
+
+      {modalDetalhesAberta && tarefaSelecionada && (
+        <ModalDetalhesTarefa
+          tarefa={tarefaSelecionada}
+          onClose={handleFecharDetalhesTarefa}
+
         />
       )}
     </div>

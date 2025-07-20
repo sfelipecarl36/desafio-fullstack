@@ -13,8 +13,4 @@ export class CriarTarefaDto {
   @IsOptional()
   @IsEnum(TarefaStatus)
   status?: TarefaStatus;
-  
-  @IsOptional()
-  @IsString()
-  comentario?: string;
 }

@@ -34,4 +34,23 @@ export class IaService {
       return "não foi possível gerar uma descrição no momento. Tente novamente.";
     }
   }
+
+   async analisarSentimento(textoParaAnalise: string): Promise<string> {
+    if (!model) {
+      console.error("tentativa de chamar IA Service para análise de sentimento sem API Key.");
+      return "serviço de IA não configurado para análise de sentimento";
+    }
+
+    const prompt = `Analise o sentimento do seguinte comentário e responda APENAS com "positivo", "neutro" ou "negativo". Se o sentimento for ambíguo ou não for claro, responda "neutro".\n\nComentário: "${textoParaAnalise}"`;
+
+    try {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const sentimentResult = response.text();
+      return sentimentResult.trim().toLowerCase();
+    } catch (error) {
+      console.error("Erro ao chamar a API Gemini para análise de sentimento:", error);
+      return "neutro"; 
+    }
+  }
 }

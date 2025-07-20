@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config'; 
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TarefasModule } from './tarefas/tarefas.module';
 import { IaModule } from './IA/ia.module';
+import { ComentariosModule } from './comentarios/comentarios.module';
 
 @Module({
   imports: [
@@ -12,21 +13,22 @@ import { IaModule } from './IA/ia.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, TarefasModule, IaModule],
+      imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({ 
         type: 'postgres',
         host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
+        port: parseInt(configService.get<string>('DB_PORT') || '5432', 10),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: true
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),
-    
-  
+    TarefasModule,
+    IaModule,
+    ComentariosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

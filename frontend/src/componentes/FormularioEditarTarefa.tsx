@@ -14,7 +14,6 @@ export const FormularioEditarTarefa: React.FC<FormularioEditarTarefaProps> = ({ 
   const [tarefa, setTarefa] = useState<Tarefa | null>(null);
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [comentario, setComentario] = useState('');
   const [status, setStatus] = useState<TarefaStatus>('pending'); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +26,6 @@ export const FormularioEditarTarefa: React.FC<FormularioEditarTarefaProps> = ({ 
         setTarefa(fetchedTarefa);
         setTitulo(fetchedTarefa.titulo);
         setDescricao(fetchedTarefa.descricao);
-        setComentario(fetchedTarefa.comentario || ''); 
         setStatus(fetchedTarefa.status);
       } catch (err) {
         console.error("Erro ao carregar tarefa para edição:", err);
@@ -51,7 +49,6 @@ export const FormularioEditarTarefa: React.FC<FormularioEditarTarefaProps> = ({ 
     const dadosAtualizados: UpdateTarefaDto = {
       titulo,
       descricao,
-      comentario: comentario.trim() !== '' ? comentario : '',
       status,
     };
 
