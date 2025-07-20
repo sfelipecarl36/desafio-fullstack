@@ -2,14 +2,16 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDa
 import { Tarefa } from '../tarefas/tarefas.entity';
 
 export enum SentimentoComentario {
-  POSITIVO = 'positivo',
-  NEUTRO = 'neutro',
-  NEGATIVO = 'negativo',
-  NAO_ANALISADO = 'não analisado',
+    POSITIVO = 'positivo',
+    NEUTRO = 'neutro',
+    NEGATIVO = 'negativo',
+    NAO_ANALISADO = 'não analisado',
 }
 
-@Entity('comentarios') 
+@Entity('comentarios')
+
 export class Comentario {
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -33,4 +35,5 @@ export class Comentario {
 
   @Column()
   tarefaId: string;
+
 }

@@ -4,7 +4,9 @@ import { IsOptional, IsEnum } from 'class-validator';
 import { TarefaStatus } from '../tarefas.entity';
 
 export class UpdateTarefaDto extends PartialType(CriarTarefaDto) {
+
   @IsOptional()
   @IsEnum(TarefaStatus)
   status?: TarefaStatus;
+  
 }

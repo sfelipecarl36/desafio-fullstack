@@ -9,4 +9,5 @@ import { Tarefa } from './tarefas.entity';
   controllers: [TarefasController],
   providers: [TarefasService]
 })
+
 export class TarefasModule {}

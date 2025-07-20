@@ -2,34 +2,36 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Comentario } from '../comentarios/comentario.entity';
 
 export enum TarefaStatus {
-  PENDING = 'pending',
-  IN_PROGRESS = 'in_progress',
-  TESTING = 'testing',
-  DONE = 'done',
+    PENDING = 'pending',
+    IN_PROGRESS = 'in_progress',
+    TESTING = 'testing',
+    DONE = 'done',
 }
 
 @Entity('tarefas')
+
 export class Tarefa {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
 
-  @Column()
-  titulo: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column()
-  descricao: string;
+    @Column()
+    titulo: string;
 
-  @Column({
-    type: 'enum',
-    enum: TarefaStatus,
-    default: TarefaStatus.PENDING,
-  })
-  status: TarefaStatus;
+    @Column()
+    descricao: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  data_criacao: Date;
+    @Column({
+      type: 'enum',
+      enum: TarefaStatus,
+      default: TarefaStatus.PENDING,
+    })
+    status: TarefaStatus;
 
-  @OneToMany(() => Comentario, comentario => comentario.tarefa)
-  comentarios: Comentario[];
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    data_criacao: Date;
+
+    @OneToMany(() => Comentario, comentario => comentario.tarefa)
+    comentarios: Comentario[];
 
 }

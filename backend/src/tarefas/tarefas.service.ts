@@ -6,10 +6,13 @@ import { Tarefa, TarefaStatus } from './tarefas.entity';
 import { UpdateTarefaDto } from './dto/update-tarefa.dto';
 
 @Injectable()
+
 export class TarefasService {
   constructor(
+
     @InjectRepository(Tarefa)
     private tarefasRepository: Repository<Tarefa>,
+
   ) {}
 
   async findTarefas(): Promise<Tarefa[]> {
@@ -44,7 +47,7 @@ export class TarefasService {
   async remove(id: string): Promise<void> {
     const result = await this.tarefasRepository.delete(id);
     if (!result) {
-      throw new NotFoundException(`Tarefa "${id}" não foi deletada`);
+      throw new NotFoundException(`tarefa "${id}" não deletada`);
     }
   }
 }

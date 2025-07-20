@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as dotenv from 'dotenv';
 
+// Por orientação do próprio Gemini este código do service foi possível
+
 dotenv.config();
 
 const API_KEY = process.env.GEMINI_API_KEY;
@@ -14,6 +16,7 @@ const genAI = API_KEY && API_KEY.trim() !== '' ? new GoogleGenerativeAI(API_KEY)
 const model = genAI ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" }) : null;
 
 @Injectable()
+
 export class IaService {
 
   async suggestDescription(titulo: string): Promise<string> { 
