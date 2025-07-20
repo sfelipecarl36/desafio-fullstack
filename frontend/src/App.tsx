@@ -23,7 +23,7 @@ function App() {
       setTarefas(fetchedTarefas);
     } catch (err) {
       console.error("Erro ao buscar tarefas:", err);
-      setError("Falha ao carregar tarefas. Verifique se o backend está rodando.");
+      setError("Falha ao carregar tarefas, verificar backend");
     } finally {
       setLoading(false);
     }
