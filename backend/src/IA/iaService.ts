@@ -13,7 +13,7 @@ if (!API_KEY || API_KEY.trim() === '') {
 }
 
 const genAI = API_KEY && API_KEY.trim() !== '' ? new GoogleGenerativeAI(API_KEY) : null;
-const model = genAI ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" }) : null;
+const model = genAI ? genAI.getGenerativeModel({ model: "gemini-2.5-flash" }) : null;
 
 @Injectable()
 

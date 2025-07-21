@@ -1,0 +1,3 @@
+CREATE USER "user" WITH PASSWORD 'password';
+CREATE DATABASE kanbandb OWNER "user";
+GRANT ALL PRIVILEGES ON DATABASE kanbandb TO "user";
